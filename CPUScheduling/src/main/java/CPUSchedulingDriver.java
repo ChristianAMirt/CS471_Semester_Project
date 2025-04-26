@@ -1,5 +1,6 @@
+import java.io.IOException;
+import  java.util.List;
 import java.util.Scanner;
-import  java.util.ArrayList;
 
 
 public class CPUSchedulingDriver {
@@ -9,28 +10,46 @@ public class CPUSchedulingDriver {
      * @param args used to pass in a single filename
      */
     public static void main(String[] args) {
-        String filePath = "src/main/data/testdata.txt";
+        String filePath = "src/main/data/Datafile1.txt";
+        List<MyProcess> processes;
+        try {
+        processes = readData.readDataFromFile(filePath);
+            while (true) { 
+                Scanner scanner  = new Scanner(System.in);
+                System.out.println("Choose the Scheduling");
+                System.out.println("1. FIFO");
+                System.out.println("2. SJF");
+                System.out.println("3. Exit");
 
-        ArrayList<Process> processes = readData.readProcessData(filePath);
+                int choice = scanner.nextInt();
 
-        Scanner scanner  = new Scanner(System.in);
-        System.out.println("Choose the Scheduling");
-        System.out.println("1. FIFO");
-        System.out.println("2. SJF");
-
-        int choice = scanner.nextInt();
-
-        switch (choice) {
-            case 1:
-                fifoScheduling FIFO = new fifoScheduling();
-                FIFO.execute(processes);
-                break;
-            case 2:
-                System.out.println("using SJF");
-                break;
-            default:
-                throw new AssertionError();
+                //types of Scheduling
+                switch (choice) {
+                    case 1:
+                        System.out.println("using FIFO");
+                        Scheduling FIFO = new Scheduling();
+                        FIFO.executeFIFO(processes);
+                        break;
+                    case 2:
+                        System.out.println("using SJF");
+                        Scheduling SJF = new Scheduling();
+                        SJF.executeSJF(processes);
+                        break;
+                    case 3:
+                        System.out.println("Exiting...");
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again");
+                }
+            }
+        
+            
+        } catch (IOException e) {
+            System.out.println("Error reading file" + e.getMessage());
         }
+        
     }
 
 }
+
