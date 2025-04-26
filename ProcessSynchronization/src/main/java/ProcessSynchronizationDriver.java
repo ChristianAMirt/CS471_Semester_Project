@@ -1,9 +1,12 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessSynchronizationDriver {
     /* The max amount of time a single thread can sleep for. */
-    public static final int MAX_SLEEP_TIME = 5000; // 5 second
+    public static final int MAX_SLEEP_TIME = 5000; // 5 seconds
     /* The size of the buffer. */
     public static final int BUFFER_SIZE = 10;
 
@@ -18,11 +21,12 @@ public class ProcessSynchronizationDriver {
     public static void main(String[] args) {
         int sleepTime, numProducers, numConsumers;
         Buffer buffer;
-        List<Thread> threads = new ArrayList<>();
 
         // Get command line arguments
-        // TODO: Argument validation (e.g. make sure sleep time is more than thread max
-        // sleep)
+        if (args.length != 3) {
+            System.err.println("Usage: /.gradlew run --args=\"<sleepTime> <numProducers> <numConsumers>\"");
+            System.exit(1);
+        }
         sleepTime = Integer.parseInt(args[0]);
         numProducers = Integer.parseInt(args[1]);
         numConsumers = Integer.parseInt(args[2]);
@@ -30,32 +34,35 @@ public class ProcessSynchronizationDriver {
         // Initialize buffer
         buffer = new Buffer(BUFFER_SIZE);
 
+        // Create an outputfile and make sure the threads are printing to it
+        try {
+            File outputFile = new File("output.txt");
+            PrintStream output = new PrintStream(outputFile);
+            System.setOut(output);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         // Create producer threads
         for (int i = 0; i < numProducers; i++) {
             Producer producer = new Producer(buffer);
             producer.start();
-            System.out.println("Started thread " + i);
-            threads.add(producer);
         }
 
         // Create consumer threads
         for (int i = 0; i < numConsumers; i++) {
             Consumer consumer = new Consumer(buffer);
             consumer.start();
-            threads.add(consumer);
         }
 
         // Sleep
         try {
-            System.out.println("Start");
             Thread.sleep(sleepTime);
-            // Stop all threads
-            for (Thread t : threads) {
-                t.interrupt();
-            }
-            System.out.println("Done");
         } catch (InterruptedException e) {
             System.err.println("Thread interrupted: " + e.getMessage());
         }
+
+        // Stop execution
+        System.exit(0);
     }
 }
