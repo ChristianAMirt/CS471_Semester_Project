@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class ProcessSynchronizationDriver {
     /* The max amount of time a single thread can sleep for. */
-    public static final int MAX_SLEEP_TIME = 1000; // 5 seconds
+    public static final int MAX_SLEEP_TIME = 1000; // 1 seconds
     /* The size of the buffer. */
     public static final int BUFFER_SIZE = 10;
 
@@ -22,7 +22,6 @@ public class ProcessSynchronizationDriver {
      *             - The number of consumer
      * 
      *             or, used to pass two parameters:
-     *             - How long to sleep before terminating
      *             - The name of the test case input file
      */
     public static void main(String[] args) {
