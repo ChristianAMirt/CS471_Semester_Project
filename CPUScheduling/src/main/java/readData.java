@@ -6,6 +6,13 @@ import java.util.List;
 
 public class readData {
 
+    /**
+     * Reads processes from a data file and return a list of MyProcess objects
+     * 
+     * @param filePath the path to theinput file containing the process  data
+     * @return a lits of MyProcess objects created fromt the file data
+     * @throws IOException if any I/O error occurs while reading the file
+     */
     public static List<MyProcess> readDataFromFile(String filePath) throws IOException{
         List<MyProcess> processes = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filePath));
