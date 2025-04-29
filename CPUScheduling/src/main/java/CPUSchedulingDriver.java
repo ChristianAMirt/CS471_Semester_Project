@@ -4,13 +4,16 @@ import java.util.Scanner;
 
 
 public class CPUSchedulingDriver {
-    /**
-     * The main function used to demonstrate the TemperatureParser class.
-     *
-     * @param args used to pass in a single filename
-     */
+   /**
+    * The entry point of the scheduling processing simulation 
+    * @param args
+    */
     public static void main(String[] args) {
-        String filePath = "src/main/data/Datafile1.txt";
+        if(args.length < 1){
+            System.out.println("error: No file path provided");
+            System.exit(1);
+        }
+        String filePath = args[0];
         List<MyProcess> processes;
         try {
         processes = readData.readDataFromFile(filePath);

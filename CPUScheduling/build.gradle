@@ -46,6 +46,7 @@ jar {
 
 run {
     mainClass = "CPUSchedulingDriver"
+    standardInput = System.in
 }
 
 application {
